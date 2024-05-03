@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="BIC Violation_dw_lgl(logical)" id="LogicalDesign-19d4" database="LogicalDesign" >
+	<schema name="INSTANCE" catalogname="BIC Violation_dw_lgl(logical)" >
+		<table name="dim_location" prior="Entity" >
+			<column name="location_id" type="INT" jt="4" mandatory="y" />
+			<column name="borough" type="VARCHAR" length="255" jt="12" />
+			<column name="Latitude" type="DOUBLE" jt="8" />
+			<column name="Longtitude" type="DOUBLE" jt="8" />
+			<index name="pk_dim_location" unique="PRIMARY_KEY" >
+				<column name="location_id" />
+			</index>
+		</table>
+		<table name="facts_fine" prior="facts_f" >
+			<column name="fact_id" prior="factid" type="BIGINT" jt="-5" mandatory="y" />
+			<column name="fine_amount" type="DECIMAL" length="10" decimal="2" jt="3" />
+			<column name="maximum_fine" type="DECIMAL" length="10" decimal="2" jt="3" />
+			<column name="violation_number" type="VARCHAR" length="255" jt="12" />
+			<column name="location_id" type="INT" jt="4" mandatory="y" />
+			<index name="pk_facts_fine" unique="PRIMARY_KEY" >
+				<column name="fact_id" />
+				<column name="location_id" />
+			</index>
+			<fk name="fk_facts_fine_dim_location" to_schema="BIC Violation_dw_lgl(logical).INSTANCE" to_table="dim_location" type="Identifying" mandatory="y" cardinality="ZeroMore" range_from="0" range_to="0" >
+				<fk_column name="location_id" pk="location_id" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-b3" show_relation="columns" >
+		<entity schema="BIC Violation_dw_lgl(logical).INSTANCE" name="dim_location" color="C1D8EE" x="748" y="272" />
+		<entity schema="BIC Violation_dw_lgl(logical).INSTANCE" name="facts_fine" color="C1D8EE" x="425" y="272" />
+		<callout x="51" y="51" pointer="Round" >
+			<comment><![CDATA[This is a layout - a diagram with tools.
+- Create new entities by right-clicking the layout. 
+- Double-click entity headers to edit.
+- For a better understanding of the schema, create multiple layouts.
+- Deploy the model into the database by converting it first to the physical design.]]></comment>
+		</callout>
+	</layout>
+</project>
