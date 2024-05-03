@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="BIC Violation_dw_lgl(logical)" id="GoogleBigQuery-1340" database="GoogleBigQuery" >
+	<schema name="INSTANCE" catalogname="BIC Violation_dw_lgl(logical)" >
+		<table name="dim_account" >
+			<column name="account_id" type="int64" jt="4" mandatory="y" />
+			<column name="BIC_number" type="int64" jt="4" />
+			<column name="account_name" type="string" length="100" jt="12" />
+			<column name="account_type" type="string" length="255" jt="12" />
+			<index name="pk_dim_account" unique="PRIMARY_KEY" >
+				<column name="account_id" />
+			</index>
+		</table>
+		<table name="dim_date" >
+			<column name="date_id" type="int64" jt="4" mandatory="y" />
+			<column name="Date_original" type="date" jt="91" />
+			<column name="date_Iso" type="datetime" jt="93" />
+			<column name="year" type="int64" jt="4" />
+			<column name="quarter" type="int64" jt="4" />
+			<column name="month" type="int64" jt="4" />
+			<index name="pk_dim_date" unique="PRIMARY_KEY" >
+				<column name="date_id" />
+			</index>
+		</table>
+		<table name="dim_location" >
+			<column name="location_id" type="int64" jt="4" mandatory="y" />
+			<column name="borough" type="string" length="255" jt="12" />
+			<column name="Latitude" type="bignumeric" jt="8" />
+			<column name="Longtitude" type="bignumeric" jt="8" />
+			<index name="pk_dim_location" unique="PRIMARY_KEY" >
+				<column name="location_id" />
+			</index>
+		</table>
+		<table name="dim_violation" >
+			<column name="violation_id" type="int64" jt="4" mandatory="y" />
+			<column name="type_violation" type="string" length="255" jt="12" />
+			<column name="violation_number" type="string" length="255" jt="12" />
+			<column name="violation_phase" prior="violation phase" type="string" length="255" jt="12" />
+			<index name="pk_dim_violation" unique="PRIMARY_KEY" >
+				<column name="violation_id" />
+			</index>
+		</table>
+		<table name="facts_fine" >
+			<column name="fact_id" type="int64" jt="4" mandatory="y" />
+			<column name="fine_amount" type="numeric" length="10" decimal="2" jt="2" />
+			<column name="maximum_fine" type="numeric" length="10" decimal="2" jt="2" />
+			<column name="violation_number" type="string" length="255" jt="12" />
+			<column name="location_id" type="int64" jt="4" mandatory="y" />
+			<column name="date_id" type="int64" jt="4" />
+			<column name="violation_id" type="int64" jt="4" />
+			<column name="account_id" type="int64" jt="4" />
+			<index name="pk_facts_fine" unique="PRIMARY_KEY" >
+				<column name="fact_id" />
+				<column name="location_id" />
+			</index>
+			<index name="unq_account_id" unique="UNIQUE_INDEX" >
+				<column name="account_id" />
+			</index>
+			<index name="unq_violation_id" unique="UNIQUE_INDEX" >
+				<column name="violation_id" />
+			</index>
+			<index name="unq_date_id" unique="UNIQUE_INDEX" >
+				<column name="date_id" />
+			</index>
+			<index name="unq_location_id" unique="UNIQUE_INDEX" >
+				<column name="location_id" />
+			</index>
+			<fk name="fk_facts_fine_dim_account" to_schema="BIC Violation_dw_lgl(logical).INSTANCE" to_table="dim_account" >
+				<fk_column name="account_id" pk="account_id" />
+			</fk>
+			<fk name="fk_facts_fine_dim_violation" to_schema="BIC Violation_dw_lgl(logical).INSTANCE" to_table="dim_violation" >
+				<fk_column name="violation_id" pk="violation_id" />
+			</fk>
+			<fk name="fk_facts_fine_dim_date" to_schema="BIC Violation_dw_lgl(logical).INSTANCE" to_table="dim_date" >
+				<fk_column name="date_id" pk="date_id" />
+			</fk>
+			<fk name="fk_facts_fine_dim_location" to_schema="BIC Violation_dw_lgl(logical).INSTANCE" to_table="dim_location" >
+				<fk_column name="location_id" pk="location_id" />
+			</fk>
+		</table>
+	</schema>
+	<layout name="Default Layout" id="Layout-df1" confirmed="y" show_relation="columns" >
+		<entity schema="BIC Violation_dw_lgl(logical).INSTANCE" name="dim_account" color="C1D8EE" x="102" y="238" />
+		<entity schema="BIC Violation_dw_lgl(logical).INSTANCE" name="dim_date" color="C1D8EE" x="714" y="459" />
+		<entity schema="BIC Violation_dw_lgl(logical).INSTANCE" name="dim_location" color="C1D8EE" x="748" y="272" />
+		<entity schema="BIC Violation_dw_lgl(logical).INSTANCE" name="dim_violation" color="C1D8EE" x="204" y="459" />
+		<entity schema="BIC Violation_dw_lgl(logical).INSTANCE" name="facts_fine" color="C1D8EE" x="425" y="272" />
+		<callout x="51" y="51" pointer="Round" >
+			<comment><![CDATA[This is a layout - a diagram with tools.
+- Create new entities by right-clicking the layout. 
+- Double-click entity headers to edit.
+- For a better understanding of the schema, create multiple layouts.
+- Deploy the model into the database by converting it first to the physical design.]]></comment>
+		</callout>
+	</layout>
+</project>
